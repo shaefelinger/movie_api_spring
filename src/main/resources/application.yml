@@ -1,20 +1,21 @@
 server:
-  port: 8081
+  port: 8080
   error:
     include-message: always
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/movie_api_db
-    username: root
-    password: theSeniorDev
+    url: jdbc:postgresql://localhost:5432/movies  # replace <your chosen database name>
+    driver-class-name: org.postgresql.Driver
+    username: user # adapt username accordingly
+    # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=<your chosen password" in the command line
+    password: password
   jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: false
-  main:
-    web-application-type: servlet
+    open-in-view: false
+  sql:
+    init:
+      mode: always
