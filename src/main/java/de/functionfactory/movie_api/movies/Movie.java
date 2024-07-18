@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Getter
@@ -17,15 +18,15 @@ import java.util.Objects;
 @Entity
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String title;
     @Column(length = 2048)
     private String overview;
     private String tagline;
     private String runtime;
     private String release_date;
-    private double revenue;
+    private Integer revenue;
     private String poster_path;
 
 
@@ -38,13 +39,13 @@ public class Movie {
 //    revenue?: number
 //    poster_path?: string
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Movie movie = (Movie) o;
-        return id != null && Objects.equals(id, movie.id);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+//        Movie movie = (Movie) o;
+//        return id != null && Objects.equals(id, movie.id);
+//    }
 
     @Override
     public int hashCode() {

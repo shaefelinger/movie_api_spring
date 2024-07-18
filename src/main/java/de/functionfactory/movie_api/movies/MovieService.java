@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -18,19 +19,14 @@ public class MovieService {
         return movieDao.selectAllMovies();
     }
 
-    public Movie getMovieById(Integer id) {
-        var movie = movieDao.selectAllMovies().stream()
-                .filter(m -> hasId(m, id))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Movie with Id " + id + " not found"));
-        return movie;
+    public Movie getMovieById(String id) {
+        return movieDao.selectMovieById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
     }
-    public Movie getMovieByTitle(String title) {
-        var movie = movieDao.selectAllMovies().stream()
-                .filter(m -> hasTitle(m, title))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Movie with Title " + title + " not found"));
-        return movie;
+    public List<Movie> getMoviesByTitle(String title) {
+        return movieDao.selectMovieByTitle(title);
+//                .orElseThrow(() -> new ResourceNotFoundException("Movie with title [%s] not found".formatted(title)));
+
     }
 
     public List<Movie> searchMovies(MovieSearchRequest searchRequest) {
@@ -40,9 +36,9 @@ public class MovieService {
                 .toList();
     }
 
-    private boolean hasId(Movie movie, Integer id) {
-        return movie.getId().equals(id);
-    }
+//    private boolean hasId(Movie movie, Integer id) {
+//        return movie.getId().equals(id);
+//    }
 
     private boolean hasTitle(Movie movie, String title) {
         return movie.getTitle().toLowerCase().contains(title.toLowerCase());

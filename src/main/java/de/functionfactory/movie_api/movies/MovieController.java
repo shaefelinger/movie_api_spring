@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -27,18 +28,18 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Movie> getMovieById(@PathVariable Integer id) {
+    ResponseEntity<Movie> getMovieById(@PathVariable String id) {
         var movie = movieService.getMovieById(id);
         return ResponseEntity.status(HttpStatus.OK).body(movie);
     }
 
     @GetMapping(params = "title")
-    ResponseEntity<Movie> getMovieByTitle(
+    ResponseEntity<List<Movie>> getMovieByTitle(
             @RequestParam
             @NotBlank
             @Size(min=3, message="Title must be at least 3 characters long")
             String title) {
-        var movie = movieService.getMovieByTitle(title);
+        var movie = movieService.getMoviesByTitle(title);
         return ResponseEntity.status(HttpStatus.OK).body(movie);
     }
 
