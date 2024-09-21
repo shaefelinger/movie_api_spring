@@ -3,6 +3,9 @@ package de.functionfactory.movie_api.movies;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +18,9 @@ class MovieControllerTest {
 
     @Test
     void getAllBooks() {
-        assertNotNull(movieController.getMovies().getBody());
-        assertEquals(2, movieController.getMovies().getBody().size());
+        var result = movieController.getMovies();
+        assertNotNull(result.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(5, result.getBody().size());
     }
 }

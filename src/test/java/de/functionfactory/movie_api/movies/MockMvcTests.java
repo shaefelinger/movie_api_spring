@@ -39,7 +39,7 @@ public class MockMvcTests {
         Movie[] movies = objectMapper.readValue(jsonPayload, Movie[].class);
         // alternatively: List<Movie> movies = objectMapper.readValue(jsonPayload, new TypeReference<>() {});
 
-        assertEquals(2, movies.length);
-        assertEquals("Star Wars", movies[1].getTitle());
+        assertEquals(5, movies.length);
+        assertEquals("Spirited Away", movies[0].getTitle());
     }
 }
