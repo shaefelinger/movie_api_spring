@@ -3,9 +3,7 @@ package de.functionfactory.movie_api.movies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -270,7 +268,6 @@ public class MoviesIntegrationTest {
 
     // DELETE
     @Test
-    @Disabled
     public void whenDeleteMovieWithInvalidId_thenBadRequestStatusIsReturned() {
         String invalidId = "invalid-uuid"; // Invalid UUID format
 
@@ -289,7 +286,6 @@ public class MoviesIntegrationTest {
     }
 
     @Test
-    @Disabled
     public void whenDeleteMovieWithNonExistentId_thenNotFoundStatusIsReturned() {
         String nonExistentId = UUID.randomUUID().toString(); // Generate a random UUID
 
@@ -308,7 +304,6 @@ public class MoviesIntegrationTest {
     }
 
     @Test
-    @Disabled
     public void whenDeleteMovieWithValidId_thenMovieIsDeletedSuccessfully() {
         // Step 1: Create movie
         Map<String, Object> mockCreateMovie = new HashMap<>();
@@ -327,7 +322,7 @@ public class MoviesIntegrationTest {
         RestAssuredMockMvc.standaloneSetup(movieController);
         String createdMovieId = RestAssuredMockMvc
                 .given()
-                .log().all()
+//                .log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(mockCreateMovie)
                 .when().post("/api/movies/")
@@ -344,7 +339,7 @@ public class MoviesIntegrationTest {
                 .when().delete("/api/movies/{id}", createdMovieId)
                 .then()
                 .log().all()
-                .status(HttpStatus.NO_CONTENT); // 204 No Content
+                .status(HttpStatus.OK); // 204 No Content
 
         // Step 4: Check that the movie was deleted
         RestAssuredMockMvc

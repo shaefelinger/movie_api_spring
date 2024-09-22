@@ -34,4 +34,9 @@ public class MovieJPADataAccessService implements MovieDao {
         return movieRepository.save(movie);
     }
 
+    @Override
+    public void deleteMovie(Movie movie) {
+        movieRepository.delete(movie);
+    }
+
 }

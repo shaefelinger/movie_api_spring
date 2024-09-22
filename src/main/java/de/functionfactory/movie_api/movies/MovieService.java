@@ -41,6 +41,10 @@ public class MovieService {
         return movieDao.createMovie(movie);
     }
 
+    public void deleteMovie(Movie movie) {
+         movieDao.deleteMovie(movie);
+    }
+
 //    private boolean hasId(Movie movie, Integer id) {
 //        return movie.getId().equals(id);
 //    }

@@ -10,4 +10,6 @@ public interface MovieDao {
     List<Movie> selectMovieByTitle(String title);
 
     Movie createMovie(Movie movie);
+
+    void deleteMovie(Movie movie);
 }

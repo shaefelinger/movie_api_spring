@@ -33,7 +33,7 @@ public class MovieController {
 
     @GetMapping("/{id}")
     ResponseEntity<Movie> getMovieById(@PathVariable @Valid UUID id) {
-        var movie = movieService.getMovieById(id.toString());
+        Movie movie = movieService.getMovieById(id.toString());
         return ResponseEntity.status(HttpStatus.OK).body(movie);
     }
 
@@ -55,8 +55,15 @@ public class MovieController {
 
     @PostMapping
     ResponseEntity<Movie> createMovie(@RequestBody @Valid Movie movie) {
-        System.out.println("😱"+movie.getTitle().length());
         Movie createdMovie = movieService.createMovie(movie);
         return ResponseEntity.status(HttpStatus.OK).body(createdMovie);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> deleteMovieById(@PathVariable @Valid UUID id) {
+        Movie movie = movieService.getMovieById(id.toString());
+
+        movieService.deleteMovie(movie);
+        return ResponseEntity.ok("OK");
     }
 }
