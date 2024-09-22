@@ -52,4 +52,10 @@ public class MovieController {
         var searchResult = movieService.searchMovies(searchRequest);
         return ResponseEntity.status(HttpStatus.OK).body(searchResult);
     }
+
+    @PostMapping
+    ResponseEntity<Movie>  createMovie(@RequestBody Movie movie) {
+        Movie createdMovie = movieService.createMovie(movie);
+         return ResponseEntity.status(HttpStatus.OK).body(createdMovie);
+    }
 }

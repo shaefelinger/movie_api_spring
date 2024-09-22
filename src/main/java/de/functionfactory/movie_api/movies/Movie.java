@@ -1,5 +1,6 @@
 package de.functionfactory.movie_api.movies;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Entity
 public class Movie {
     @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String title;
     @Column(length = 2048)

@@ -8,4 +8,6 @@ public interface MovieDao {
     List<Movie> selectAllMovies();
     Optional<Movie> selectMovieById(String id);
     List<Movie> selectMovieByTitle(String title);
+
+    Movie createMovie(Movie movie);
 }

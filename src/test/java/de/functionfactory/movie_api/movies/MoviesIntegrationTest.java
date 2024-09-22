@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
@@ -50,27 +51,27 @@ public class MoviesIntegrationTest {
     @Test
     public void whenGetMovies_thenListOfMoviesIsReturned() {
         RestAssuredMockMvc.standaloneSetup(movieController);
-//        RestAssuredMockMvc.
-//                given()
-//                .log().all()
-//                .when().get("/api/movies")
-//                .then()
-//                .log().all()
-//                .status(HttpStatus.OK)
-//                .body("size()", equalTo(5))
-//                .body("title[0]", equalTo("Spirited Away"));
-
-        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
+        RestAssuredMockMvc.
                 given()
                 .log().all()
                 .when().get("/api/movies")
-                .andReturn();
-        mockMvcResponse.
-                then()
+                .then()
                 .log().all()
-                .statusCode(200)
-                .body("title[0]", equalTo("Spirited Away"))
-                .body("size()", equalTo(5));
+                .status(HttpStatus.OK)
+                .body("size()", equalTo(5))
+                .body("title[0]", equalTo("Spirited Away"));
+
+//        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
+//                given()
+//                .log().all()
+//                .when().get("/api/movies")
+//                .andReturn();
+//        mockMvcResponse.
+//                then()
+//                .log().all()
+//                .statusCode(200)
+//                .body("title[0]", equalTo("Spirited Away"))
+//                .body("size()", equalTo(5));
     }
 
     @Test
@@ -119,7 +120,6 @@ public class MoviesIntegrationTest {
 
     // POST
     @Test
-    @Disabled
     public void whenPostMovieWithTooLongTitle_thenBadRequestStatusIsReturned() {
         String longTitle = """
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
@@ -187,6 +187,44 @@ public class MoviesIntegrationTest {
         // Optionally, you can check for a specific error message:
         // .body("message", containsString("Invalid runtime format"));
     }
+
+    @Test
+    public void whenInputIsValid_thenMovieIsCreated() {
+        // Step 1: Define the mock movie
+        Map<String, Object> mockMovie = new HashMap<>();
+        mockMovie.put("title", "Porco Rosso");
+        mockMovie.put("overview", """
+        In Italy in the 1930s, sky pirates in biplanes terrorize wealthy cruise ships as they sail the Adriatic Sea. 
+        The only pilot brave enough to stop the scourge is the mysterious Porco Rosso, a former World War I flying ace who was somehow turned into a pig during the war. 
+        As he prepares to battle the pirate crew's American ace, Porco Rosso enlists the help of spunky girl mechanic Fio Piccolo and his longtime friend Madame Gina.
+    """);
+        mockMovie.put("tagline", "A Pig Got to Fly.");
+        mockMovie.put("runtime", "01:34:00");
+        mockMovie.put("release_date", "1992-07-18");
+        mockMovie.put("revenue", 44600000);
+        mockMovie.put("poster_path", "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/byKAndF6KQSDpGxp1mTr23jPbYp.jpg");
+
+        // Step 2: Send POST request to create the movie
+        RestAssuredMockMvc.standaloneSetup(movieController);
+        Map response = RestAssuredMockMvc
+                .given()
+//                .log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(mockMovie)
+                .when().post("/api/movies/")
+                .then()
+                .log().all()
+                .status(HttpStatus.OK)
+                .extract().as(Map.class);
+
+        // Step 3: Validate the response
+        assertThat(response).usingRecursiveComparison()
+                .ignoringFields("id") // Ignore the generated 'id'
+                .isEqualTo(mockMovie);
+       //  assertThat(response).isEqualToComparingOnlyGivenFields(mockMovie, "title", "overview", "tagline", "runtime", "release_date", "revenue", "poster_path");
+//        assertThat(response).isEqualToIgnoringGivenFields(mockMovie, "id"); // Assuming the 'id' is generated and not included in mockMovie
+    }
+
 
     // PATCH
     @Test

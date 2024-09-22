@@ -37,6 +37,10 @@ public class MovieService {
                 .toList();
     }
 
+    public Movie createMovie(Movie movie) {
+        return movieDao.createMovie(movie);
+    }
+
 //    private boolean hasId(Movie movie, Integer id) {
 //        return movie.getId().equals(id);
 //    }
@@ -44,5 +48,6 @@ public class MovieService {
     private boolean hasTitle(Movie movie, String title) {
         return movie.getTitle().toLowerCase().contains(title.toLowerCase());
     }
+
 
 }

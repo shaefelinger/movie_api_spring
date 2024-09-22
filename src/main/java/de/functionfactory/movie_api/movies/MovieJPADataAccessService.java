@@ -29,4 +29,9 @@ public class MovieJPADataAccessService implements MovieDao {
         return movieRepository.findByTitleContainingIgnoreCase(title);
     }
 
+    @Override
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
 }
