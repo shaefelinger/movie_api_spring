@@ -54,8 +54,9 @@ public class MovieController {
     }
 
     @PostMapping
-    ResponseEntity<Movie>  createMovie(@RequestBody Movie movie) {
+    ResponseEntity<Movie> createMovie(@RequestBody @Valid Movie movie) {
+        System.out.println("😱"+movie.getTitle().length());
         Movie createdMovie = movieService.createMovie(movie);
-         return ResponseEntity.status(HttpStatus.OK).body(createdMovie);
+        return ResponseEntity.status(HttpStatus.OK).body(createdMovie);
     }
 }
