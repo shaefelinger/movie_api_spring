@@ -20,6 +20,7 @@ public class MovieService {
     }
 
     public Movie getMovieById(String id) {
+
         return movieDao.selectMovieById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
     }
