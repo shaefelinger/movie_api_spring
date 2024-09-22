@@ -3,6 +3,7 @@ package de.functionfactory.movie_api.movies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,15 +50,27 @@ public class MoviesIntegrationTest {
     @Test
     public void whenGetMovies_thenListOfMoviesIsReturned() {
         RestAssuredMockMvc.standaloneSetup(movieController);
-        RestAssuredMockMvc.
+//        RestAssuredMockMvc.
+//                given()
+//                .log().all()
+//                .when().get("/api/movies")
+//                .then()
+//                .log().all()
+//                .status(HttpStatus.OK)
+//                .body("size()", equalTo(5))
+//                .body("title[0]", equalTo("Spirited Away"));
+
+        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
                 given()
                 .log().all()
                 .when().get("/api/movies")
-                .then()
+                .andReturn();
+        mockMvcResponse.
+                then()
                 .log().all()
-                .status(HttpStatus.OK)
-                .body("size()", equalTo(5))
-                .body("title[0]", equalTo("Spirited Away"));
+                .statusCode(200)
+                .body("title[0]", equalTo("Spirited Away"))
+                .body("size()", equalTo(5));
     }
 
     @Test
