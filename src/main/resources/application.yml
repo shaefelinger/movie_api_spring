@@ -10,12 +10,16 @@ spring:
     # set PG_PASSWORD in your environment, e.g., by running "export PG_PASSWORD=<your chosen password" in the command line
     password: theSeniorDev
   jpa:
- #   database-platform: org.hibernate.dialect.PostgreSQLDialect
- #   generate-ddl: true
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true # By default, DDL statements will only be generated for embedded databases.
+    # By default, Spring Boot will try to populate the database from data.sql on startup,
+    # i.e. before JPA has the opportunity to generate DDL statements from classes annotated with @Entity.
     defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: validate
+#    hibernate:
+#      ddl-auto: create-drop
     open-in-view: false
-#  sql:
-#    init:
-#      mode: always
+  sql:
+    init:
+      # The default value is 'embedded', which only works for in-memory databases.
+      # Since we're using a 'non-embedded' database here, we now need to set this to 'always'.
+      mode: always
