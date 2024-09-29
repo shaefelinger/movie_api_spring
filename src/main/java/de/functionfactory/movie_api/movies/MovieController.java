@@ -74,84 +74,18 @@ public class MovieController {
         return ResponseEntity.ok("OK");
     }
 
-//    @PatchMapping("/{id}")
-//    ResponseEntity<Movie> patchMovie(
-//            @PathVariable @Valid UUID id,
-//            @RequestBody @Valid Movie editedMovie
-//    ) {
-//        Movie foundMovie = movieService.getMovieById(id.toString());
-//        Movie combinedMovie = new Movie();
-//
-////        final HashMap<Object, Object> combinedMovie = new HashMap<>() {{
-////            putAll(foundMovie);
-////            putAll(editedMovie);
-////        }};
-//
-//
-//        return ResponseEntity.ok().body(foundMovie);
-//    }
-
-
-
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Movie> updateMovie(@PathVariable String id, @RequestBody Map<String, Object> updates) {
-//        Optional<Movie> optionalMovie = movieRepository.findById(id);
-//
-//        if (optionalMovie.isPresent()) {
-//            Movie movie = optionalMovie.get();
-//
-//            updates.forEach((key, value) -> {
-//                Field field = ReflectionUtils.findField(Movie.class, key);
-//                if (field != null) {
-//                    field.setAccessible(true);
-//                    ReflectionUtils.setField(field, movie, value);
-//                }
-//            });
-//
-//            Movie updatedMovie = movieRepository.save(movie);
-//            return ResponseEntity.ok(updatedMovie);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
     @PatchMapping("/{id}")
     public ResponseEntity<Movie> updateMovie(
-            @PathVariable String id,
-            @RequestBody MovieUpdateRequestDto movieUpdateRequestDto) {
+            @PathVariable @Valid UUID id,
+            @RequestBody @Valid MovieUpdateRequestDto movieUpdateRequestDto) {
 
-        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        Optional<Movie> updatedMovie = movieService.updateMovie(id.toString(), movieUpdateRequestDto);
 
-        if (optionalMovie.isPresent()) {
-            Movie movie = optionalMovie.get();
-
-            // Update only fields that are not null in the DTO
-            if (movieUpdateRequestDto.getTitle() != null) {
-                movie.setTitle(movieUpdateRequestDto.getTitle());
-            }
-            if (movieUpdateRequestDto.getOverview() != null) {
-                movie.setOverview(movieUpdateRequestDto.getOverview());
-            }
-            if (movieUpdateRequestDto.getTagline() != null) {
-                movie.setTagline(movieUpdateRequestDto.getTagline());
-            }
-            if (movieUpdateRequestDto.getRuntime() != null) {
-                movie.setRuntime(movieUpdateRequestDto.getRuntime());
-            }
-            if (movieUpdateRequestDto.getRelease_date() != null) {
-                movie.setRelease_date(movieUpdateRequestDto.getRelease_date());
-            }
-            if (movieUpdateRequestDto.getRevenue() != null) {
-                movie.setRevenue(movieUpdateRequestDto.getRevenue());
-            }
-            if (movieUpdateRequestDto.getPoster_path() != null) {
-                movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
-            }
-
-            Movie updatedMovie = movieRepository.save(movie);
-            return ResponseEntity.ok(updatedMovie);
+        if (updatedMovie.isPresent()) {
+            return ResponseEntity.ok(updatedMovie.get());
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 }

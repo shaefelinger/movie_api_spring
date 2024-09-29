@@ -47,10 +47,8 @@ public class MovieService {
     }
 
     public Optional<Movie> updateMovie(String id, MovieUpdateRequestDto movieUpdateRequestDto) {
-        Optional<Movie> optionalMovie = movieDao.selectMovieById(id);
-
-        if (optionalMovie.isPresent()) {
-            Movie movie = optionalMovie.get();
+        Movie movie = movieDao.selectMovieById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
 
             // Update only fields that are not null in the DTO
             if (movieUpdateRequestDto.getTitle() != null) {
@@ -76,9 +74,6 @@ public class MovieService {
             }
 
             return Optional.of(movieDao.createMovie(movie));
-        } else {
-            return Optional.empty();
-        }
     }
 
 //    private boolean hasId(Movie movie, Integer id) {
