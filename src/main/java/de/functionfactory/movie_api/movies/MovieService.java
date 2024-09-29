@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,6 +46,41 @@ public class MovieService {
          movieDao.deleteMovie(movie);
     }
 
+    public Optional<Movie> updateMovie(String id, MovieUpdateRequestDto movieUpdateRequestDto) {
+        Optional<Movie> optionalMovie = movieDao.selectMovieById(id);
+
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+
+            // Update only fields that are not null in the DTO
+            if (movieUpdateRequestDto.getTitle() != null) {
+                movie.setTitle(movieUpdateRequestDto.getTitle());
+            }
+            if (movieUpdateRequestDto.getOverview() != null) {
+                movie.setOverview(movieUpdateRequestDto.getOverview());
+            }
+            if (movieUpdateRequestDto.getTagline() != null) {
+                movie.setTagline(movieUpdateRequestDto.getTagline());
+            }
+            if (movieUpdateRequestDto.getRuntime() != null) {
+                movie.setRuntime(movieUpdateRequestDto.getRuntime());
+            }
+            if (movieUpdateRequestDto.getRelease_date() != null) {
+                movie.setRelease_date(movieUpdateRequestDto.getRelease_date());
+            }
+            if (movieUpdateRequestDto.getRevenue() != null) {
+                movie.setRevenue(movieUpdateRequestDto.getRevenue());
+            }
+            if (movieUpdateRequestDto.getPoster_path() != null) {
+                movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
+            }
+
+            return Optional.of(movieDao.createMovie(movie));
+        } else {
+            return Optional.empty();
+        }
+    }
+
 //    private boolean hasId(Movie movie, Integer id) {
 //        return movie.getId().equals(id);
 //    }
@@ -52,6 +88,4 @@ public class MovieService {
     private boolean hasTitle(Movie movie, String title) {
         return movie.getTitle().toLowerCase().contains(title.toLowerCase());
     }
-
-
 }

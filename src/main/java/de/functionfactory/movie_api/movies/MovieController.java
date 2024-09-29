@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -19,6 +22,10 @@ import java.util.UUID;
 public class MovieController {
 
     private final MovieService movieService;
+
+
+    @Autowired
+    private MovieRepository movieRepository;
 
     @Autowired
     public MovieController(MovieService movieService) {
@@ -60,10 +67,91 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<String> deleteMovieById(@PathVariable @Valid UUID id) {
+    ResponseEntity<String> deleteMovie(@PathVariable @Valid UUID id) {
         Movie movie = movieService.getMovieById(id.toString());
 
         movieService.deleteMovie(movie);
         return ResponseEntity.ok("OK");
+    }
+
+//    @PatchMapping("/{id}")
+//    ResponseEntity<Movie> patchMovie(
+//            @PathVariable @Valid UUID id,
+//            @RequestBody @Valid Movie editedMovie
+//    ) {
+//        Movie foundMovie = movieService.getMovieById(id.toString());
+//        Movie combinedMovie = new Movie();
+//
+////        final HashMap<Object, Object> combinedMovie = new HashMap<>() {{
+////            putAll(foundMovie);
+////            putAll(editedMovie);
+////        }};
+//
+//
+//        return ResponseEntity.ok().body(foundMovie);
+//    }
+
+
+
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<Movie> updateMovie(@PathVariable String id, @RequestBody Map<String, Object> updates) {
+//        Optional<Movie> optionalMovie = movieRepository.findById(id);
+//
+//        if (optionalMovie.isPresent()) {
+//            Movie movie = optionalMovie.get();
+//
+//            updates.forEach((key, value) -> {
+//                Field field = ReflectionUtils.findField(Movie.class, key);
+//                if (field != null) {
+//                    field.setAccessible(true);
+//                    ReflectionUtils.setField(field, movie, value);
+//                }
+//            });
+//
+//            Movie updatedMovie = movieRepository.save(movie);
+//            return ResponseEntity.ok(updatedMovie);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Movie> updateMovie(
+            @PathVariable String id,
+            @RequestBody MovieUpdateRequestDto movieUpdateRequestDto) {
+
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+
+            // Update only fields that are not null in the DTO
+            if (movieUpdateRequestDto.getTitle() != null) {
+                movie.setTitle(movieUpdateRequestDto.getTitle());
+            }
+            if (movieUpdateRequestDto.getOverview() != null) {
+                movie.setOverview(movieUpdateRequestDto.getOverview());
+            }
+            if (movieUpdateRequestDto.getTagline() != null) {
+                movie.setTagline(movieUpdateRequestDto.getTagline());
+            }
+            if (movieUpdateRequestDto.getRuntime() != null) {
+                movie.setRuntime(movieUpdateRequestDto.getRuntime());
+            }
+            if (movieUpdateRequestDto.getRelease_date() != null) {
+                movie.setRelease_date(movieUpdateRequestDto.getRelease_date());
+            }
+            if (movieUpdateRequestDto.getRevenue() != null) {
+                movie.setRevenue(movieUpdateRequestDto.getRevenue());
+            }
+            if (movieUpdateRequestDto.getPoster_path() != null) {
+                movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
+            }
+
+            Movie updatedMovie = movieRepository.save(movie);
+            return ResponseEntity.ok(updatedMovie);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
