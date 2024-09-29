@@ -46,7 +46,7 @@ public class MovieService {
          movieDao.deleteMovie(movie);
     }
 
-    public Optional<Movie> updateMovie(String id, MovieUpdateRequestDto movieUpdateRequestDto) {
+    public Movie updateMovie(String id, MovieUpdateRequestDto movieUpdateRequestDto) {
         Movie movie = movieDao.selectMovieById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
 
@@ -73,7 +73,7 @@ public class MovieService {
                 movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
             }
 
-            return Optional.of(movieDao.createMovie(movie));
+            return movieDao.createMovie(movie);
     }
 
 //    private boolean hasId(Movie movie, Integer id) {

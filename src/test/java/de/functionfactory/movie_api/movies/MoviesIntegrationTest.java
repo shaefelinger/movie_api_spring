@@ -48,7 +48,7 @@ public class MoviesIntegrationTest {
                     .log().all()
                     .status(HttpStatus.OK)
 //                .body("size()", equalTo(5))
-                    .body("title[0]", equalTo("Princess Mononoke"));
+                    .body("title[0]", equalTo("Spirited Away"));
 
 //        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
 //                given()
