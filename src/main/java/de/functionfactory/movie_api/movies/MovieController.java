@@ -1,5 +1,6 @@
 package de.functionfactory.movie_api.movies;
 
+import de.functionfactory.movie_api.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -84,7 +85,7 @@ public class MovieController {
         if (updatedMovie.isPresent()) {
             return ResponseEntity.ok(updatedMovie.get());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Movie not updated");
         }
 
     }
