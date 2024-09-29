@@ -1,18 +1,19 @@
 package de.functionfactory.movie_api.movies;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,14 +22,15 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Testcontainers
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MoviesIntegrationTest {
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16-alpine");
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
     @Autowired
     private MovieController movieController;
 
@@ -47,7 +49,7 @@ public class MoviesIntegrationTest {
                     .then()
                     .log().all()
                     .status(HttpStatus.OK)
-//                .body("size()", equalTo(5))
+//                    .body("size()", equalTo(7))
                     .body("title[0]", equalTo("Spirited Away"));
 
 //        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
