@@ -29,10 +29,18 @@ import static org.hamcrest.Matchers.equalTo;
 public class MoviesIntegrationTest {
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16-alpine");
+    static PostgreSQLContainer<?> postgresContainer =
+            new PostgreSQLContainer<>("postgres:16-alpine")
+                    .withDatabaseName("movies-test-db");
 
     @Autowired
     private MovieController movieController;
+
+    @Test
+    void canStartPostgresDB() throws Exception {
+        assertThat(postgresContainer.isCreated()).isTrue();
+        assertThat(postgresContainer.isRunning()).isTrue();
+    }
 
     @Nested
     @DisplayName("GET request to /api/movies")

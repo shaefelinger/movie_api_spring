@@ -8,7 +8,7 @@ public interface MovieDao {
     Optional<Movie> selectMovieById(String id);
     List<Movie> selectMovieByTitle(String title);
 
-    Movie createMovie(Movie movie);
+    Movie saveMovie(Movie movie);
 
     void deleteMovie(Movie movie);
 }

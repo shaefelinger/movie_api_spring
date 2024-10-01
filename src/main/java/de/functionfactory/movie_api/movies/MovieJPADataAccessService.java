@@ -29,7 +29,7 @@ public class MovieJPADataAccessService implements MovieDao {
     }
 
     @Override
-    public Movie createMovie(Movie movie) {
+    public Movie saveMovie(Movie movie) {
         return movieRepository.save(movie);
     }
 

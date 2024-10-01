@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -39,7 +37,7 @@ public class MovieService {
     }
 
     public Movie createMovie(Movie movie) {
-        return movieDao.createMovie(movie);
+        return movieDao.saveMovie(movie);
     }
 
     public void deleteMovie(Movie movie) {
@@ -73,14 +71,14 @@ public class MovieService {
                 movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
             }
 
-            return movieDao.createMovie(movie);
+            return movieDao.saveMovie(movie);
     }
 
 //    private boolean hasId(Movie movie, Integer id) {
 //        return movie.getId().equals(id);
 //    }
 
-    private boolean hasTitle(Movie movie, String title) {
-        return movie.getTitle().toLowerCase().contains(title.toLowerCase());
-    }
+//    private boolean hasTitle(Movie movie, String title) {
+//        return movie.getTitle().toLowerCase().contains(title.toLowerCase());
+//    }
 }
