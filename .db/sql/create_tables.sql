@@ -12,18 +12,18 @@ CREATE TABLE IF NOT EXISTS movies (
 );
 
 
--- -- Creation of movie_reviews table
--- CREATE TABLE IF NOT EXISTS movie_reviews (
---     id varchar(250) UNIQUE NOT NULL,
---     author_name varchar(500) NOT NULL,
---     content varchar(10000),
---     rating INT CONSTRAINT rating CHECK (rating <= 10 AND rating >= 0),
---     movie_id varchar(250) NOT NULL,
---     PRIMARY KEY (id),
---     CONSTRAINT fk_customer
---     FOREIGN KEY(movie_id)
---     REFERENCES movies(id)
--- );
+-- Creation of movie_reviews table
+CREATE TABLE IF NOT EXISTS movie_reviews (
+    id varchar(250) UNIQUE NOT NULL,
+    author_name varchar(500) NOT NULL,
+    content varchar(10000),
+    rating INT CONSTRAINT rating CHECK (rating <= 10 AND rating >= 0),
+    movie_id varchar(250) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_customer
+    FOREIGN KEY(movie_id)
+    REFERENCES movies(id)
+);
 
 
 

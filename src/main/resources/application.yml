@@ -2,6 +2,14 @@ server:
   port: 8080
   error:
     include-message: always
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs/swagger.json
+  swagger-ui:
+    disable-swagger-default-url: false
+    path: /api-docs
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5431/movie_api_db  # replace <your chosen database name>
@@ -15,8 +23,8 @@ spring:
     # By default, Spring Boot will try to populate the database from data.sql on startup,
     # i.e. before JPA has the opportunity to generate DDL statements from classes annotated with @Entity.
     defer-datasource-initialization: true
-#    hibernate:
-#      ddl-auto: create-drop
+    hibernate:
+      ddl-auto: create-drop
     open-in-view: false
   sql:
     init:

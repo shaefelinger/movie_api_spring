@@ -23,6 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/movies")
 @Validated
+
 public class MovieController {
 
     private final MovieService movieService;
