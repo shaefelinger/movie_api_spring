@@ -2,6 +2,11 @@ server:
   port: 8080
   error:
     include-message: always
+  compression:
+    enabled: true
+  # You can also configure the compression thresholds like this
+#    min-response-size=2048
+#    mime-types=text/html,text/xml,text/plain,text/css,application/json
 springdoc:
   api-docs:
     enabled: true
