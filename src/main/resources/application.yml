@@ -9,7 +9,9 @@ springdoc:
   swagger-ui:
     disable-swagger-default-url: false
     path: /api-docs
-
+logging:
+  level:
+    root: info
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5431/movie_api_db  # replace <your chosen database name>
