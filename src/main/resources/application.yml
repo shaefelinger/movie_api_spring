@@ -39,6 +39,10 @@ management:
         include: info, health, prometheus
       base-path: /
 spring:
+  security:
+    user:
+      name: admin
+      password: supersecret
   datasource:
     url: jdbc:postgresql://localhost:5431/movie_api_db  # replace <your chosen database name>
     driver-class-name: org.postgresql.Driver
