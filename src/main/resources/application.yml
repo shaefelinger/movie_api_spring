@@ -17,6 +17,20 @@ springdoc:
 logging:
   level:
     root: info
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      show-details: always
+      show-components: always
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus
+      base-path: /
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5431/movie_api_db  # replace <your chosen database name>
