@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 
 @Getter
 @Setter
@@ -24,23 +22,30 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="movies")
+@Table(name = "movies")
 @Entity
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column(length = 500)
-    @Size(min=3, message="Title must be at least 3 characters long")
-    @Size(max=500, message="Title must be max 500 characters long")
+    @Size(min = 3, message = "Title must be at least 3 characters long")
+    @Size(max = 500, message = "Title must be max 500 characters long")
     private String title;
+
     @Column(length = 2048)
     private String overview;
+
     private String tagline;
+
     @Pattern(regexp = "^([0-1]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$", message = "Time must be in the format HH:mm:ss")
     private String runtime;
+
     private String release_date;
+
     private Integer revenue;
+
     private String poster_path;
 
 
