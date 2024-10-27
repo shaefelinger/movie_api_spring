@@ -1,5 +1,4 @@
-package de.functionfactory.movie_api.movies;
-
+package de.functionfactory.movie_api.movie;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +25,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MoviesIntegrationTest {
+public class MoviesIT {
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgresContainer =
@@ -59,18 +58,6 @@ public class MoviesIntegrationTest {
                     .status(HttpStatus.OK)
 //                    .body("size()", equalTo(7))
                     .body("title[0]", equalTo("Spirited Away"));
-
-//        MockMvcResponse mockMvcResponse = RestAssuredMockMvc.
-//                given()
-//                .log().all()
-//                .when().get("/api/movies")
-//                .andReturn();
-//        mockMvcResponse.
-//                then()
-//                .log().all()
-//                .statusCode(200)
-//                .body("title[0]", equalTo("Spirited Away"))
-//                .body("size()", equalTo(5));
         }
     }
 

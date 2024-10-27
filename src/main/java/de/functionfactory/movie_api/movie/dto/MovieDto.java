@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie.dto;
 
 public class MovieDto {
     String id;

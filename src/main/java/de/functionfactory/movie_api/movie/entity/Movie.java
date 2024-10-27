@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "movies")
+@Table(name = "movie")
 @Entity
 public class Movie {
     @Id

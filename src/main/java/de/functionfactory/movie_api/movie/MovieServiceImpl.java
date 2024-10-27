@@ -1,16 +1,18 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie;
 
-import de.functionfactory.movie_api.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Qualifier;
+import de.functionfactory.movie_api.movie.dto.MovieSearchRequest;
+import de.functionfactory.movie_api.movie.dto.MovieUpdateRequestDto;
+import de.functionfactory.movie_api.movie.entity.Movie;
+import de.functionfactory.movie_api.tech.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MovieService {
+public class MovieServiceImpl implements MovieService {
     private final MovieDao movieDao;
 
-    public MovieService(@Qualifier("jpa") MovieDao movieDao) {
+    public MovieServiceImpl(MovieDao movieDao) {
         this.movieDao = movieDao;
     }
 
@@ -73,12 +75,12 @@ public class MovieService {
 
             return movieDao.saveMovie(movie);
     }
-
-//    private boolean hasId(Movie movie, Integer id) {
-//        return movie.getId().equals(id);
-//    }
-
-//    private boolean hasTitle(Movie movie, String title) {
-//        return movie.getTitle().toLowerCase().contains(title.toLowerCase());
-//    }
+//
+////    private boolean hasId(Movie movie, Integer id) {
+////        return movie.getId().equals(id);
+////    }
+//
+////    private boolean hasTitle(Movie movie, String title) {
+////        return movie.getTitle().toLowerCase().contains(title.toLowerCase());
+////    }
 }

@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.exception;
+package de.functionfactory.movie_api.tech.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

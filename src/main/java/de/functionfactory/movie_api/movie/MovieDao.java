@@ -1,4 +1,6 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie;
+
+import de.functionfactory.movie_api.movie.entity.Movie;
 
 import java.util.List;
 import java.util.Optional;

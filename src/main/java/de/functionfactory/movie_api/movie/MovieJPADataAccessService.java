@@ -1,5 +1,6 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie;
 
+import de.functionfactory.movie_api.movie.entity.Movie;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

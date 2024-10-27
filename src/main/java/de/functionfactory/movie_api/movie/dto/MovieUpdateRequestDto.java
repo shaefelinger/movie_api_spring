@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie.dto;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

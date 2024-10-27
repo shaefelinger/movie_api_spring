@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.exception;
+package de.functionfactory.movie_api.tech.exceptions;
 
 import java.time.ZonedDateTime;
 import java.util.List;

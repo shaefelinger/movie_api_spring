@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie.dto;
 
 import lombok.Data;
 import jakarta.validation.constraints.Size;

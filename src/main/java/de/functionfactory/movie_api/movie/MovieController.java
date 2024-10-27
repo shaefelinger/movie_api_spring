@@ -1,5 +1,8 @@
-package de.functionfactory.movie_api.movies;
+package de.functionfactory.movie_api.movie;
 
+import de.functionfactory.movie_api.movie.dto.MovieSearchRequest;
+import de.functionfactory.movie_api.movie.dto.MovieUpdateRequestDto;
+import de.functionfactory.movie_api.movie.entity.Movie;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,7 +32,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @Autowired
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieServiceImpl movieService) {
         this.movieService = movieService;
     }
 

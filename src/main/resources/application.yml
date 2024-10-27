@@ -1,15 +1,16 @@
 server:
-  port: 8443
+#  port: 8443
+  port: 8080
   error:
     include-message: always
   compression:
     enabled: true
-  ssl:
-    key-store: ./springboot.p12
-    key-store-password: password
-    key-store-type: pkcs12
-    key-alias: springboot
-    key-password: password
+#  ssl:
+#    key-store: ./springboot.p12
+#    key-store-password: password
+#    key-store-type: pkcs12
+#    key-alias: springboot
+#    key-password: password
 
   # You can also configure the compression thresholds like this
 #    min-response-size=2048
