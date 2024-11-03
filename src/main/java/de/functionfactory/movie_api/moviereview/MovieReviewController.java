@@ -1,8 +1,10 @@
 package de.functionfactory.movie_api.moviereview;
 
 import de.functionfactory.movie_api.movie.MovieService;
+import de.functionfactory.movie_api.movie.dto.MovieUpdateRequestDto;
 import de.functionfactory.movie_api.movie.entity.Movie;
 import de.functionfactory.movie_api.moviereview.dto.MovieReviewView;
+import de.functionfactory.movie_api.moviereview.dto.ReviewUpdateRequestDto;
 import de.functionfactory.movie_api.moviereview.entity.MovieReview;
 import de.functionfactory.movie_api.tech.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
@@ -59,12 +61,10 @@ public class MovieReviewController {
 
     @PostMapping("/{movieId}/reviews")
     ResponseEntity<MovieReview> postReview(@PathVariable @Valid UUID movieId,
-                                           @RequestBody MovieReview movieReview) {
+                                           @RequestBody @Valid MovieReview movieReview) {
 
         // Fetch the Movie entity by movieId
         Movie movie = movieService.getMovieById(movieId.toString());
-//                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with ID: " + movieId));
-
 
         // Set the movie in the review
         movieReview.setMovie(movie);
@@ -78,12 +78,27 @@ public class MovieReviewController {
         Movie movie = movieService.getMovieById(movieId.toString());
         MovieReview review = movieReviewService.getReviewById(reviewId.toString());
 
-        if (movie == null || review == null) {
-            throw new ResourceNotFoundException("MovieReview not found");
-        }
+//        if (movie == null || review == null) {
+//            throw new ResourceNotFoundException("MovieReview not found");
+//        }
 
         movieReviewService.deleteReview(reviewId.toString());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{movieId}/reviews/{reviewId}")
+    ResponseEntity<MovieReview> updateReview(@PathVariable @Valid UUID movieId,
+                                             @PathVariable @Valid UUID reviewId,
+                                             @RequestBody @Valid ReviewUpdateRequestDto newReview) {
+        Movie movie = movieService.getMovieById(movieId.toString());
+        MovieReview review = movieReviewService.getReviewById(reviewId.toString());
+
+//        if (movie == null || review == null) {
+//            throw new ResourceNotFoundException("MovieReview not found");
+//        }
+
+        var updatedReview = movieReviewService.updateReview(reviewId.toString(), newReview);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedReview);
     }
 
 

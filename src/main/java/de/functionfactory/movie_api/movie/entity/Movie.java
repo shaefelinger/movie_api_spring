@@ -59,24 +59,6 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MovieReview> reviews;
 
-
-    //    id: string
-//    title: string
-//    overview?: string
-//    tagline?: string
-//    runtime: string
-//    release_date: Date
-//    revenue?: number
-//    poster_path?: string
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-//        Movie movie = (Movie) o;
-//        return id != null && Objects.equals(id, movie.id);
-//    }
-
     @Override
     public int hashCode() {
         return getClass().hashCode();

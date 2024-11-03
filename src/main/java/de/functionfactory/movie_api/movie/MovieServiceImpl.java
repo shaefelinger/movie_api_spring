@@ -47,40 +47,20 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public Movie updateMovie(String id, MovieUpdateRequestDto movieUpdateRequestDto) {
-        Movie movie = movieDao.selectMovieById(id)
+        Movie existingMovie = movieDao.selectMovieById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
 
-            // Update only fields that are not null in the DTO
-            if (movieUpdateRequestDto.getTitle() != null) {
-                movie.setTitle(movieUpdateRequestDto.getTitle());
-            }
-            if (movieUpdateRequestDto.getOverview() != null) {
-                movie.setOverview(movieUpdateRequestDto.getOverview());
-            }
-            if (movieUpdateRequestDto.getTagline() != null) {
-                movie.setTagline(movieUpdateRequestDto.getTagline());
-            }
-            if (movieUpdateRequestDto.getRuntime() != null) {
-                movie.setRuntime(movieUpdateRequestDto.getRuntime());
-            }
-            if (movieUpdateRequestDto.getRelease_date() != null) {
-                movie.setRelease_date(movieUpdateRequestDto.getRelease_date());
-            }
-            if (movieUpdateRequestDto.getRevenue() != null) {
-                movie.setRevenue(movieUpdateRequestDto.getRevenue());
-            }
-            if (movieUpdateRequestDto.getPoster_path() != null) {
-                movie.setPoster_path(movieUpdateRequestDto.getPoster_path());
-            }
+        Movie updatedMovie = Movie.builder()
+            .id(existingMovie.getId())
+            .title(movieUpdateRequestDto.getTitle() != null ? movieUpdateRequestDto.getTitle() : existingMovie.getTitle())
+            .overview(movieUpdateRequestDto.getOverview() != null ? movieUpdateRequestDto.getOverview() : existingMovie.getOverview())
+            .tagline(movieUpdateRequestDto.getTagline() != null ? movieUpdateRequestDto.getTagline() : existingMovie.getTagline())
+            .runtime(movieUpdateRequestDto.getRuntime() != null ? movieUpdateRequestDto.getRuntime() : existingMovie.getRuntime())
+            .release_date(movieUpdateRequestDto.getRelease_date() != null ? movieUpdateRequestDto.getRelease_date() : existingMovie.getRelease_date())
+            .revenue(movieUpdateRequestDto.getRevenue() != null ? movieUpdateRequestDto.getRevenue() : existingMovie.getRevenue())
+            .poster_path(movieUpdateRequestDto.getPoster_path() != null ? movieUpdateRequestDto.getPoster_path() : existingMovie.getPoster_path())
+            .build();
 
-            return movieDao.saveMovie(movie);
+        return movieDao.saveMovie(updatedMovie);
     }
-//
-////    private boolean hasId(Movie movie, Integer id) {
-////        return movie.getId().equals(id);
-////    }
-//
-////    private boolean hasTitle(Movie movie, String title) {
-////        return movie.getTitle().toLowerCase().contains(title.toLowerCase());
-////    }
 }

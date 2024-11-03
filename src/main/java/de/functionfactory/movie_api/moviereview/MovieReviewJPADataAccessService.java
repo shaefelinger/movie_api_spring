@@ -6,6 +6,7 @@ import de.functionfactory.movie_api.moviereview.entity.MovieReview;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MovieReviewJPADataAccessService implements MovieReviewDao{
@@ -31,7 +32,7 @@ public class MovieReviewJPADataAccessService implements MovieReviewDao{
     }
 
     @Override
-    public MovieReview selectReviewById(String reviewId) {
+    public Optional<MovieReview> selectReviewById(String reviewId) {
         return movieReviewRepository.findMovieReviewById(reviewId);
     }
 
