@@ -28,7 +28,7 @@ public class TestDataGenerator {
                 .release_date("2024-10-12")
                 .title(faker.book().title())
                 .overview(faker.lorem().paragraph(3))
-                .tagline(faker.lordOfTheRings().character().toString())
+                .tagline(faker.lordOfTheRings().character())
                 .runtime("01:45:00") // fixed runtime for simplicity
                 .revenue((int) Long.parseLong(faker.number().digits(6)))
                 .poster_path(faker.internet().image())
@@ -53,10 +53,10 @@ public class TestDataGenerator {
     public MovieWithReview createFakeMovieWithReviews() {
         Movie movie = createFakeMovie();
         MovieReview review = createFakeMovieReview(movie);
-        
+
         Movie updatedMovie = movieRepository.findById(movie.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
-        
+
         return new MovieWithReview(updatedMovie, review);
     }
 
