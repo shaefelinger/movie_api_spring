@@ -1,5 +1,8 @@
 package de.functionfactory.movie_api.movie;
 
+import de.functionfactory.movie_api.movie.entity.Movie;
+import de.functionfactory.movie_api.utils.TestDataGenerator;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,7 +17,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,6 +40,9 @@ public class MoviesIT {
     @Autowired
     private MovieController movieController;
 
+    @Autowired
+    private TestDataGenerator testDataGenerator;
+
     @Test
     void canStartPostgresDB() throws Exception {
         assertThat(postgresContainer.isCreated()).isTrue();
@@ -46,69 +54,144 @@ public class MoviesIT {
     class whenGetMovies {
 
         @Test
-        @DisplayName("list of all movies is returned")
+        @DisplayName("list of movies is returned with correct content")
         public void whenGetMovies_thenListOfMoviesIsReturned() {
+            // Step 1: Create test movies
+            Movie movieOne = testDataGenerator.createFakeMovie();
+            Movie movieTwo = testDataGenerator.createFakeMovie();
+
             RestAssuredMockMvc.standaloneSetup(movieController);
-            RestAssuredMockMvc.
-                    given()
-                    .log().all()
+
+            // Step 2: Get all movies and verify
+            List<Movie> response = RestAssuredMockMvc
+                    .given()
                     .when().get("/api/movies")
                     .then()
-                    .log().all()
                     .status(HttpStatus.OK)
-//                    .body("size()", equalTo(7))
-                    .body("title[0]", equalTo("Spirited Away"));
+                    .extract().as(new TypeRef<>() {
+                    });
+
+            // Step 3: Verify both movies are in the response
+            assertThat(response.stream()
+                    .anyMatch(movie -> movie.getId().equals(movieOne.getId())))
+                    .isTrue();
+            assertThat(response.stream()
+                    .anyMatch(movie -> movie.getId().equals(movieTwo.getId())))
+                    .isTrue();
         }
+
+//        @Test
+//        @DisplayName("pagination returns correct results")
+//        public void whenGetMoviesWithPagination_thenCorrectPagesAreReturned() {
+//            // Step 1: Create 20 test movies
+//            List<Movie> createdMovies = new ArrayList<>();
+//            for (int i = 0; i < 20; i++) {
+//                Movie movie = testDataGenerator.createFakeMovie();
+//                createdMovies.add(movie);
+//            }
+//
+//            RestAssuredMockMvc.standaloneSetup(movieController);
+//
+//            // Step 2: Get first page (0-9)
+//            List<Map> firstPageResponse = RestAssuredMockMvc
+//                    .given()
+//                    .queryParam("page", 0)
+//                    .queryParam("limit", 10)
+//                    .when().get("/api/movies")
+//                    .then()
+//                    .status(HttpStatus.OK)
+//                    .extract().as(List.class);
+//
+//            // Verify first page
+//            assertThat(firstPageResponse).hasSize(10);
+//            for (int i = 0; i < 10; i++) {
+//                final int index = i;
+//                assertThat(firstPageResponse.stream()
+//                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
+//                        .isTrue();
+//            }
+//
+//            // Step 3: Get second page (10-19)
+//            List<Map> secondPageResponse = RestAssuredMockMvc
+//                    .given()
+//                    .queryParam("page", 1)
+//                    .queryParam("limit", 10)
+//                    .when().get("/api/movies")
+//                    .then()
+//                    .status(HttpStatus.OK)
+//                    .extract().as(List.class);
+//
+//            // Verify second page
+//            assertThat(secondPageResponse).hasSize(10);
+//            for (int i = 10; i < 20; i++) {
+//                final int index = i;
+//                assertThat(secondPageResponse.stream()
+//                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
+//                        .isTrue();
+//            }
+//        }
     }
 
     @Nested
-    @DisplayName("GET request to api/movies/:id for a single movie")
-    class whenGetMovieById {
-        @Test
-        @DisplayName("valid uuid -> correct movie is returned")
-        public void whenGetMovieWithValidUuid_thenCorrectMovieIsReturned() {
-            String movieId = "f74cf1ca-8c7b-435b-96c6-e4448a653596";
+    @DisplayName("When we make a GET request to api/movies/:id for a single movie")
+    class WhenGetMovieById {
 
-            RestAssuredMockMvc.standaloneSetup(movieController);
-            RestAssuredMockMvc
-                    .given()
-                    .log().all()
-                    .when().get("/api/movies/{id}", movieId)
-                    .then()
-                    .log().all()
-                    .status(HttpStatus.OK)
-                    .body("title", equalTo("Spirited Away"))
-                    .body("revenue", equalTo(274925095));
+        @Nested
+        @DisplayName("With a valid uuid")
+        class WithValidUuid {
+            @Test
+            @DisplayName("Then the correct movie is returned")
+            void thenCorrectMovieIsReturned() {
+                // Create test movie
+                Movie movieOne = testDataGenerator.createFakeMovie();
+
+                RestAssuredMockMvc.standaloneSetup(movieController);
+                Map<String, Object> response = RestAssuredMockMvc
+                        .given()
+                        .when().get("/api/movies/{id}", movieOne.getId())
+                        .then()
+                        .status(HttpStatus.OK)
+                        .extract().as(new TypeRef<>() {});
+
+                // Verify response matches created movie
+                assertThat(response.get("id")).isEqualTo(movieOne.getId().toString());
+                assertThat(response.get("title")).isEqualTo(movieOne.getTitle());
+                // Add other relevant assertions
+            }
         }
 
-        @Test
-        @DisplayName("Invalid uuid -> BAD_REQUEST returned")
-        public void whenGetMovieWithInvalidUuid_thenBadRequestStatusIsReturned() {
-            String movieId = "random-id";
+        @Nested
+        @DisplayName("With an invalid uuid")
+        class WithInvalidUuid {
+            @Test
+            @DisplayName("Then a 400 status code is returned")
+            void thenBadRequestIsReturned() {
+                String movieId = "random-id";
 
-            RestAssuredMockMvc.standaloneSetup(movieController);
-            RestAssuredMockMvc
-                    .given()
-                    .log().all()
-                    .when().get("/api/movies/{id}", movieId)
-                    .then()
-                    .log().all()
-                    .status(HttpStatus.BAD_REQUEST);
+                RestAssuredMockMvc.standaloneSetup(movieController);
+                RestAssuredMockMvc
+                        .given()
+                        .when().get("/api/movies/{id}", movieId)
+                        .then()
+                        .status(HttpStatus.BAD_REQUEST);
+            }
         }
 
-        @Test
-        @DisplayName("Non-existent uuid -> NOT_FOUND returned")
-        public void whenGetMovieWithNonExistentUuid_thenNotFoundStatusIsReturned() {
-            String movieId = "05acb69a-ad9b-43fa-bea8-95e4c95e30e0";
+        @Nested
+        @DisplayName("With a uuid that does not exist in the database")
+        class WithNonExistentUuid {
+            @Test
+            @DisplayName("Then a 404 Not Found status code is returned")
+            void thenNotFoundIsReturned() {
+                String movieId = "05acb69a-ad9b-43fa-bea8-95e4c95e30e0";
 
-            RestAssuredMockMvc.standaloneSetup(movieController);
-            RestAssuredMockMvc
-                    .given()
-                    .log().all()
-                    .when().get("/api/movies/{id}", movieId)
-                    .then()
-                    .log().all()
-                    .status(HttpStatus.NOT_FOUND);
+                RestAssuredMockMvc.standaloneSetup(movieController);
+                RestAssuredMockMvc
+                        .given()
+                        .when().get("/api/movies/{id}", movieId)
+                        .then()
+                        .status(HttpStatus.NOT_FOUND);
+            }
         }
     }
 
@@ -330,8 +413,6 @@ public class MoviesIT {
                     .log().all()
                     .status(HttpStatus.OK)
                     .extract().as(Map.class);
-
-            System.out.println("🙈" + updatedMovieResponse);
 
             // Step 5: Validate the updated response
             assertThat(updatedMovieResponse)
