@@ -29,4 +29,14 @@ public class MovieReviewJPADataAccessService implements MovieReviewDao{
     public MovieReview saveReview(MovieReview movieReview) {
         return movieReviewRepository.save(movieReview);
     }
+
+    @Override
+    public MovieReview selectReviewById(String reviewId) {
+        return movieReviewRepository.findMovieReviewById(reviewId);
+    }
+
+    @Override
+    public void deleteById(String reviewId) {
+        movieReviewRepository.deleteById(reviewId);
+    }
 }

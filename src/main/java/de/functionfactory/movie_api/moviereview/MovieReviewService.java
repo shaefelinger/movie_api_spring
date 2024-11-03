@@ -10,4 +10,6 @@ public interface MovieReviewService {
     List<MovieReviewView> getMovieReviews();
     List<MovieReviewView> getReviewsByMovieId(String movieId);
     MovieReview createReview(MovieReview movieReview);
+    MovieReview getReviewById(String reviewId);
+    void deleteReview(String reviewId);
 }

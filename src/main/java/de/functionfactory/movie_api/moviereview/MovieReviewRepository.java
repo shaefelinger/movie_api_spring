@@ -9,5 +9,7 @@ import java.util.List;
 public interface MovieReviewRepository extends JpaRepository<MovieReview, String> {
     List<MovieReviewView> findAllProjectedBy();
     List<MovieReviewView> findMovieReviewsByMovie_Id(String movieId);
-    MovieReview save(MovieReview movieReview);
+    // MovieReview save(MovieReview movieReview);
+    void deleteById(String reviewId);
+    MovieReview findMovieReviewById(String reviewId);
 }

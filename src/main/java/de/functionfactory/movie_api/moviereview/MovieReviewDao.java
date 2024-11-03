@@ -9,4 +9,6 @@ public interface MovieReviewDao {
     List<MovieReviewView> selectAllReviews();
     List<MovieReviewView> selectReviewsByMovieId(String movieId);
     MovieReview saveReview(MovieReview movieReview);
+    MovieReview selectReviewById(String reviewId);
+    void deleteById(String reviewId);
 }

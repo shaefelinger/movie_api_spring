@@ -15,8 +15,6 @@ public class MovieReviewServiceImpl implements MovieReviewService {
         this.movieReviewDao = movieReviewDao;
     }
 
-    ;
-
     public List<MovieReviewView> getMovieReviews() {
         List<MovieReviewView> movieReviews = movieReviewDao.selectAllReviews();
         return movieReviews;
@@ -27,11 +25,18 @@ public class MovieReviewServiceImpl implements MovieReviewService {
         return movieReviews;
     }
 
+    public MovieReview getReviewById(String reviewId) {
+      MovieReview review = movieReviewDao.selectReviewById(reviewId);
+      return review;
+    }
+
     @Override
     public MovieReview createReview(MovieReview movieReview) {
         var newReview = movieReviewDao.saveReview(movieReview);
         return newReview;
     }
 
-
+    public void deleteReview(String reviewId) {
+        movieReviewDao.deleteById(reviewId);
+    }
 }

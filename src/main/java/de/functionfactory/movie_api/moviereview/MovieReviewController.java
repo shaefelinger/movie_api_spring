@@ -2,7 +2,6 @@ package de.functionfactory.movie_api.moviereview;
 
 import de.functionfactory.movie_api.movie.MovieService;
 import de.functionfactory.movie_api.movie.entity.Movie;
-import de.functionfactory.movie_api.moviereview.dto.ReviewCreateRequest;
 import de.functionfactory.movie_api.moviereview.dto.MovieReviewView;
 import de.functionfactory.movie_api.moviereview.entity.MovieReview;
 import de.functionfactory.movie_api.tech.exceptions.ResourceNotFoundException;
@@ -10,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +45,21 @@ public class MovieReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(reviews);
     }
 
-    @PostMapping ("/{movieId}/reviews")
+    @GetMapping("/{movieId}/reviews/{reviewId}")
+    ResponseEntity<MovieReview> getReviewById(@PathVariable @Valid UUID movieId,
+                                                        @PathVariable @Valid UUID reviewId) {
+        MovieReview review = movieReviewService.getReviewById(reviewId.toString());
+
+        if(review == null) {
+            throw new ResourceNotFoundException("Review not found");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(review);
+    }
+
+    @PostMapping("/{movieId}/reviews")
     ResponseEntity<MovieReview> postReview(@PathVariable @Valid UUID movieId,
-                                           @RequestBody  MovieReview movieReview) {
+                                           @RequestBody MovieReview movieReview) {
 
         // Fetch the Movie entity by movieId
         Movie movie = movieService.getMovieById(movieId.toString());
@@ -61,11 +73,20 @@ public class MovieReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(newReview);
     }
 
-//    @GetMapping ("/kaka")
-//    ResponseEntity<MovieReview> postReview(@PathVariable  UUID movieId,
-//                                               @RequestBody  MovieReview movieReview) {
-//        System.out.println("😎asdasdasd"+ movieId);
-//        MovieReview newReview = movieReviewService.createReview(movieReview);
-//        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(newReview);
-//    }
+    @DeleteMapping("/{movieId}/reviews/{reviewId}")
+    ResponseEntity<Void> deleteReview(@PathVariable @Valid UUID movieId, @PathVariable @Valid UUID reviewId) {
+        Movie movie = movieService.getMovieById(movieId.toString());
+        MovieReview review = movieReviewService.getReviewById(reviewId.toString());
+
+        if (movie == null || review == null) {
+            throw new ResourceNotFoundException("MovieReview not found");
+        }
+
+        movieReviewService.deleteReview(reviewId.toString());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+
+
 }
