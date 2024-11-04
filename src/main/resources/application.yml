@@ -40,6 +40,8 @@ management:
         include: info, health, prometheus
       base-path: /
 spring:
+  liquibase:
+    change-log: classpath:db/db.changelog-master.xml
   security:
     user:
       name: admin
@@ -52,12 +54,12 @@ spring:
     password: theSeniorDev
   jpa:
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: true # By default, DDL statements will only be generated for embedded databases.
+#    generate-ddl: true # By default, DDL statements will only be generated for embedded databases.
     # By default, Spring Boot will try to populate the database from data.sql on startup,
     # i.e. before JPA has the opportunity to generate DDL statements from classes annotated with @Entity.
-    defer-datasource-initialization: true
+#    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     open-in-view: false
   sql:
     init:

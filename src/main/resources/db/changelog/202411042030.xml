@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="stha">
+        <createTable tableName="movie">
+            <column name="id" type="varchar(250)">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="title" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="overview" type="varchar(10000)"/>
+            <column name="tagline" type="varchar(1000)"/>
+            <column name="runtime" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="release_date" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revenue" type="int"/>
+            <column name="poster_path" type="varchar(800)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="stha">
+        <createTable tableName="movie_review">
+            <column name="id" type="varchar(250)">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="author_name" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(10000)"/>
+            <column name="rating" type="int">
+                <constraints checkConstraint="rating &lt;= 10 AND rating &gt;= 0"/>
+            </column>
+            <column name="movie_id" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="movie_review"
+                baseColumnNames="movie_id"
+                constraintName="fk_customer"
+                referencedTableName="movie"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
