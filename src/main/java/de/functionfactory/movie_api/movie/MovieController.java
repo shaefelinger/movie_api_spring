@@ -36,11 +36,11 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping
-    ResponseEntity<List<Movie>> getMovies() {
-        var books = movieService.getMovies();
-        return ResponseEntity.ok(books);
-    }
+//    @GetMapping
+//    ResponseEntity<List<Movie>> getMovies() {
+//        var movies = movieService.getMovies();
+//        return ResponseEntity.ok(movies);
+//    }
 
     @GetMapping("/{id}")
     ResponseEntity<Movie> getMovieById(@PathVariable @Valid UUID id) {
@@ -48,13 +48,15 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.OK).body(movie);
     }
 
-    @GetMapping(params = "title")
-    ResponseEntity<List<Movie>> getMovieByTitle(
-            @RequestParam
-            @NotBlank
-            @Size(min=3, message="Title must be at least 3 characters long")
-            String title) {
-        var movie = movieService.getMoviesByTitle(title);
+    @GetMapping()
+    ResponseEntity<MoviePageResponse> getMovieByTitle(
+            @RequestParam(defaultValue = "")
+            String title,
+            @RequestParam(defaultValue = "0")
+            int page,
+            @RequestParam(defaultValue = "10")
+            int limit) {
+        var movie = movieService.getMoviesByTitle(title, page, limit);
         return ResponseEntity.status(HttpStatus.OK).body(movie);
     }
 

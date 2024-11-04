@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface MovieDao {
     List<Movie> selectAllMovies();
     Optional<Movie> selectMovieById(String id);
-    List<Movie> selectMovieByTitle(String title);
+    MoviePageResponse selectMovieByTitle(String title, int page, int limit);
 
     Movie saveMovie(Movie movie);
 

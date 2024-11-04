@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+//import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,56 +81,60 @@ public class MoviesIT {
                     .isTrue();
         }
 
-//        @Test
-//        @DisplayName("pagination returns correct results")
-//        public void whenGetMoviesWithPagination_thenCorrectPagesAreReturned() {
-//            // Step 1: Create 20 test movies
-//            List<Movie> createdMovies = new ArrayList<>();
-//            for (int i = 0; i < 20; i++) {
-//                Movie movie = testDataGenerator.createFakeMovie();
-//                createdMovies.add(movie);
-//            }
-//
-//            RestAssuredMockMvc.standaloneSetup(movieController);
-//
-//            // Step 2: Get first page (0-9)
-//            List<Map> firstPageResponse = RestAssuredMockMvc
-//                    .given()
-//                    .queryParam("page", 0)
-//                    .queryParam("limit", 10)
-//                    .when().get("/api/movies")
-//                    .then()
-//                    .status(HttpStatus.OK)
-//                    .extract().as(List.class);
-//
-//            // Verify first page
-//            assertThat(firstPageResponse).hasSize(10);
-//            for (int i = 0; i < 10; i++) {
-//                final int index = i;
-//                assertThat(firstPageResponse.stream()
-//                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
-//                        .isTrue();
-//            }
-//
-//            // Step 3: Get second page (10-19)
-//            List<Map> secondPageResponse = RestAssuredMockMvc
-//                    .given()
-//                    .queryParam("page", 1)
-//                    .queryParam("limit", 10)
-//                    .when().get("/api/movies")
-//                    .then()
-//                    .status(HttpStatus.OK)
-//                    .extract().as(List.class);
-//
-//            // Verify second page
-//            assertThat(secondPageResponse).hasSize(10);
-//            for (int i = 10; i < 20; i++) {
-//                final int index = i;
-//                assertThat(secondPageResponse.stream()
-//                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
-//                        .isTrue();
-//            }
-//        }
+        @Test
+        @DisplayName("pagination returns correct results")
+        public void whenGetMoviesWithPagination_thenCorrectPagesAreReturned() {
+            // Step 1: Create 20 test movies
+            List<Movie> createdMovies = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                Movie movie = testDataGenerator.createFakeMovie();
+                createdMovies.add(movie);
+            }
+
+            RestAssuredMockMvc.standaloneSetup(movieController);
+
+            // Step 2: Get first page (0-9)
+            Map<String, Object> firstPageResponse = RestAssuredMockMvc
+                    .given()
+                    .log().all()
+                    .queryParam("page", 0)
+                    .queryParam("limit", 10)
+                    .when().get("/api/movies")
+                    .then()
+                    .log().all()
+                    .status(HttpStatus.OK)
+                    .extract().as(new TypeRef<Map<String, Object>>() {});
+
+            List<Map<String, Object>> firstPageContent = (List<Map<String, Object>>) firstPageResponse.get("data");
+
+            // Verify first page
+            for (int i = 0; i < 10; i++) {
+                final int index = i;
+                assertThat(firstPageContent.stream()
+                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
+                        .isTrue();
+            }
+
+            // Step 3: Get second page (10-19)
+            Map<String, Object> secondPageResponse = RestAssuredMockMvc
+                    .given()
+                    .queryParam("page", 1)
+                    .queryParam("limit", 10)
+                    .when().get("/api/movies")
+                    .then()
+                    .status(HttpStatus.OK)
+                    .extract().as(new TypeRef<Map<String, Object>>() {});
+
+            List<Map<String, Object>> secondPageContent = (List<Map<String, Object>>) secondPageResponse.get("data");
+
+            // Verify second page
+            for (int i = 10; i < 20; i++) {
+                final int index = i;
+                assertThat(secondPageContent.stream()
+                        .anyMatch(movie -> movie.get("id").equals(createdMovies.get(index).getId())))
+                        .isTrue();
+            }
+        }
     }
 
     @Nested
@@ -518,24 +523,4 @@ public class MoviesIT {
         }
     }
 
-//    @Test
-//    @DisplayName("jo das ist mit der test util")
-//    void testWithTestUtil() {
-//        var result = getRawBodyFromGetReq("/api/movies", HttpStatus.OK);
-//
-//        System.out.println("😂" + result);
-//
-//        final DocumentContext parsed = JsonPath.parse(result);
-//
-//        final Object read = parsed.read("$..title");
-//        System.out.println(read);
-//    }
-//
-//    @Test
-//    public void whenGetMovies_thenListOfMoviesIsReturned() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/movies")
-//                        .contentType("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(5));
-//    }
 }

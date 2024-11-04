@@ -9,7 +9,7 @@ import java.util.List;
 public interface MovieService {
     List<Movie> getMovies();
     Movie getMovieById(String id);
-    List<Movie> getMoviesByTitle(String title);
+    MoviePageResponse getMoviesByTitle(String title, int page, int limit);
     List<Movie> searchMovies(MovieSearchRequest searchRequest);
     Movie createMovie(Movie movie);
     void deleteMovie(Movie movie);

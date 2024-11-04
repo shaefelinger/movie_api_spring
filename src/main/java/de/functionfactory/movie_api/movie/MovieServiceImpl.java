@@ -25,8 +25,8 @@ public class MovieServiceImpl implements MovieService {
         return movieDao.selectMovieById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(id)));
     }
-    public List<Movie> getMoviesByTitle(String title) {
-        return movieDao.selectMovieByTitle(title);
+    public MoviePageResponse getMoviesByTitle(String title, int page, int limit) {
+        return movieDao.selectMovieByTitle(title, page, limit);
 //                .orElseThrow(() -> new ResourceNotFoundException("Movie with title [%s] not found".formatted(title)));
 
     }
