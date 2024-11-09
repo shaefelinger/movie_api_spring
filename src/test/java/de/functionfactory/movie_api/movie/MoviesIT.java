@@ -4,6 +4,7 @@ import de.functionfactory.movie_api.movie.entity.Movie;
 import de.functionfactory.movie_api.utils.TestDataGenerator;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,9 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.test.annotation.DirtiesContext;
 //import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -28,9 +31,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @Testcontainers
-
 @SpringBootTest
 @AutoConfigureMockMvc
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class MoviesIT {
     @Container
     @ServiceConnection
@@ -44,6 +47,15 @@ public class MoviesIT {
     @Autowired
     private TestDataGenerator testDataGenerator;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    void setUp() {
+        // Clear all data from the movies table
+        jdbcTemplate.execute("TRUNCATE TABLE movie CASCADE");
+    }
+
     @Test
     void canStartPostgresDB() throws Exception {
         assertThat(postgresContainer.isCreated()).isTrue();
@@ -53,7 +65,6 @@ public class MoviesIT {
     @Nested
     @DisplayName("GET request to /api/movies")
     class whenGetMovies {
-
         @Test
         @DisplayName("list of movies is returned with correct content")
         public void whenGetMovies_thenListOfMoviesIsReturned() {
@@ -64,20 +75,21 @@ public class MoviesIT {
             RestAssuredMockMvc.standaloneSetup(movieController);
 
             // Step 2: Get all movies and verify
-            List<Movie> response = RestAssuredMockMvc
+            Map<String, Object> response = RestAssuredMockMvc
                     .given()
                     .when().get("/api/movies")
                     .then()
                     .status(HttpStatus.OK)
-                    .extract().as(new TypeRef<>() {
-                    });
+                    .extract().as(new TypeRef<Map<String, Object>>() {});
+
+            List<Map<String, Object>> movies = (List<Map<String, Object>>) response.get("data");
 
             // Step 3: Verify both movies are in the response
-            assertThat(response.stream()
-                    .anyMatch(movie -> movie.getId().equals(movieOne.getId())))
+            assertThat(movies.stream()
+                    .anyMatch(movie -> movie.get("id").toString().equals(movieOne.getId().toString())))
                     .isTrue();
-            assertThat(response.stream()
-                    .anyMatch(movie -> movie.getId().equals(movieTwo.getId())))
+            assertThat(movies.stream()
+                    .anyMatch(movie -> movie.get("id").toString().equals(movieTwo.getId().toString())))
                     .isTrue();
         }
 
@@ -522,5 +534,4 @@ public class MoviesIT {
                     .status(HttpStatus.NOT_FOUND); // 404 Not Found
         }
     }
-
 }

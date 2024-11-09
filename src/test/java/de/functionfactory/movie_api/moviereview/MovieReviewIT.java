@@ -57,6 +57,7 @@ public class MovieReviewIT {
         @Test
         @DisplayName("list of all reviews is returned")
         public void whenGetReviews_thenListOfReviewsIsReturned() {
+            MovieWithReview result = testDataGenerator.createFakeMovieWithReviews();
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
                     .log().all()
@@ -64,8 +65,8 @@ public class MovieReviewIT {
                     .then()
                     .log().all()
                     .status(HttpStatus.OK)
-//                    .body("size()", equalTo(2))
-                    .body("authorName[0]", equalTo("Ze Blah"));
+                    .body("size()", equalTo(1))
+                    .body("authorName[0]", equalTo(result.review().getAuthorName()));
         }
     }
 
@@ -154,11 +155,11 @@ public class MovieReviewIT {
             String movieId = fakeMovie.getId();
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "authorName": "Foo Bar",
-                    "rating": 8
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "authorName": "Foo Bar",
+                        "rating": 8
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -180,11 +181,11 @@ public class MovieReviewIT {
             String nonExistentMovieId = UUID.randomUUID().toString();
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "authorName": "Foo Bar",
-                    "rating": 8
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "authorName": "Foo Bar",
+                        "rating": 8
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -192,7 +193,7 @@ public class MovieReviewIT {
                     .contentType("application/json")
                     .body(reviewData)
                     .when()
-                    .post("/api/movies/" + nonExistentMovieId + "/reviews" )
+                    .post("/api/movies/" + nonExistentMovieId + "/reviews")
                     .then()
                     .log().all()
                     .status(HttpStatus.NOT_FOUND);
@@ -204,11 +205,11 @@ public class MovieReviewIT {
             String invalidMovieId = "invalid-id";
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "authorName": "Foo Bar",
-                    "rating": 8
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "authorName": "Foo Bar",
+                        "rating": 8
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -216,7 +217,7 @@ public class MovieReviewIT {
                     .contentType("application/json")
                     .body(reviewData)
                     .when()
-                    .post("/api/movies/" + invalidMovieId + "/reviews" )
+                    .post("/api/movies/" + invalidMovieId + "/reviews")
                     .then()
                     .log().all()
                     .status(HttpStatus.BAD_REQUEST);
@@ -231,11 +232,11 @@ public class MovieReviewIT {
             String movieId = fakeMovie.getId();
 
             String reviewData = """
-                {
-                    "content": "Too short ..",
-                    "authorName": "Foo Bar",
-                    "rating": 8
-                }""";
+                    {
+                        "content": "Too short ..",
+                        "authorName": "Foo Bar",
+                        "rating": 8
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -256,10 +257,10 @@ public class MovieReviewIT {
             String movieId = fakeMovie.getId();
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "rating": 8
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "rating": 8
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -280,10 +281,10 @@ public class MovieReviewIT {
             String movieId = fakeMovie.getId();
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "authorName": "Foo Bar"                  
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "authorName": "Foo Bar"                  
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
@@ -304,11 +305,11 @@ public class MovieReviewIT {
             String movieId = fakeMovie.getId();
 
             String reviewData = """
-                {
-                    "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
-                    "rating": 12,
-                    "authorName": "Foo Bar"                  
-                }""";
+                    {
+                        "content": "I really enjoyed the movie, particularly the ending. This is by far one of the best movies out there.",
+                        "rating": 12,
+                        "authorName": "Foo Bar"                  
+                    }""";
 
             RestAssuredMockMvc.standaloneSetup(movieReviewController);
             RestAssuredMockMvc.given()
