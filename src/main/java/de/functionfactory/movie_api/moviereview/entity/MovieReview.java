@@ -25,7 +25,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "movie")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

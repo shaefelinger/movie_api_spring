@@ -17,25 +17,21 @@ public class MovieReviewServiceImpl implements MovieReviewService {
     }
 
     public List<MovieReviewView> getMovieReviews() {
-        List<MovieReviewView> movieReviews = movieReviewDao.selectAllReviews();
-        return movieReviews;
+        return movieReviewDao.selectAllReviews();
     }
 
     public List<MovieReviewView> getReviewsByMovieId(String movieId) {
-        List<MovieReviewView> movieReviews = movieReviewDao.selectReviewsByMovieId(movieId);
-        return movieReviews;
+        return movieReviewDao.selectReviewsByMovieId(movieId);
     }
 
     public MovieReview getReviewById(String reviewId) {
-        MovieReview review = movieReviewDao.selectReviewById(reviewId)
+        return movieReviewDao.selectReviewById(reviewId)
                 .orElseThrow(() -> new ResourceNotFoundException("Review with id [%s] not found".formatted(reviewId)));
-        return review;
     }
 
     @Override
     public MovieReview createReview(MovieReview movieReview) {
-        var newReview = movieReviewDao.saveReview(movieReview);
-        return newReview;
+        return movieReviewDao.saveReview(movieReview);
     }
 
     public void deleteReview(String reviewId) {

@@ -4,6 +4,8 @@ import de.functionfactory.movie_api.movie.entity.Movie;
 import de.functionfactory.movie_api.utils.TestDataGenerator;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -36,6 +38,18 @@ public class MoviesIT {
     static PostgreSQLContainer<?> postgresContainer =
             new PostgreSQLContainer<>("postgres:16-alpine")
                     .withDatabaseName("movies-test-db");
+
+    @BeforeAll
+    static void setUpDB() {
+        postgresContainer.start();
+    }
+
+    @AfterAll
+    static void tearDown() {
+        if (postgresContainer != null && postgresContainer.isRunning()) {
+            postgresContainer.stop();
+        }
+    }
 
     @Autowired
     private MovieController movieController;
@@ -71,6 +85,7 @@ public class MoviesIT {
             RestAssuredMockMvc.standaloneSetup(movieController);
 
             // Step 2: Get all movies and verify
+            @SuppressWarnings("unchecked")
             Map<String, Object> response = RestAssuredMockMvc
                     .given()
                     .when().get("/api/movies")
@@ -133,7 +148,8 @@ public class MoviesIT {
                     .when().get("/api/movies")
                     .then()
                     .status(HttpStatus.OK)
-                    .extract().as(new TypeRef<Map<String, Object>>() {});
+                    .extract().as(new TypeRef<Map<String, Object>>() {
+                    });
 
             List<Map<String, Object>> secondPageContent = (List<Map<String, Object>>) secondPageResponse.get("data");
 
@@ -166,7 +182,8 @@ public class MoviesIT {
                         .when().get("/api/movies/{id}", movieOne.getId())
                         .then()
                         .status(HttpStatus.OK)
-                        .extract().as(new TypeRef<>() {});
+                        .extract().as(new TypeRef<>() {
+                        });
 
                 // Verify response matches created movie
                 assertThat(response.get("id")).isEqualTo(movieOne.getId());
