@@ -11,8 +11,7 @@ public class MovieApiApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(MovieApiApplication.class);
 
     public static void main(String[] args) {
-        LOGGER.info("😎Starting Movie API");
+        LOGGER.info("Starting Movie API");
         SpringApplication.run(MovieApiApplication.class, args);
     }
-
 }

@@ -1,6 +1,5 @@
 package de.functionfactory.movie_api.moviereview;
 
-import de.functionfactory.movie_api.moviereview.dto.ReviewCreateRequest;
 import de.functionfactory.movie_api.moviereview.dto.MovieReviewView;
 import de.functionfactory.movie_api.moviereview.dto.ReviewUpdateRequestDto;
 import de.functionfactory.movie_api.moviereview.entity.MovieReview;

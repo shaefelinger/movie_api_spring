@@ -75,12 +75,8 @@ public class MovieReviewController {
 
     @DeleteMapping("/{movieId}/reviews/{reviewId}")
     ResponseEntity<Void> deleteReview(@PathVariable @Valid UUID movieId, @PathVariable @Valid UUID reviewId) {
-        Movie movie = movieService.getMovieById(movieId.toString());
-        MovieReview review = movieReviewService.getReviewById(reviewId.toString());
-
-//        if (movie == null || review == null) {
-//            throw new ResourceNotFoundException("MovieReview not found");
-//        }
+        movieService.getMovieById(movieId.toString());
+        movieReviewService.getReviewById(reviewId.toString());
 
         movieReviewService.deleteReview(reviewId.toString());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -90,18 +86,12 @@ public class MovieReviewController {
     ResponseEntity<MovieReview> updateReview(@PathVariable @Valid UUID movieId,
                                              @PathVariable @Valid UUID reviewId,
                                              @RequestBody @Valid ReviewUpdateRequestDto newReview) {
-        Movie movie = movieService.getMovieById(movieId.toString());
-        MovieReview review = movieReviewService.getReviewById(reviewId.toString());
 
-//        if (movie == null || review == null) {
-//            throw new ResourceNotFoundException("MovieReview not found");
-//        }
+        movieService.getMovieById(movieId.toString());
+        movieReviewService.getReviewById(reviewId.toString());
 
         var updatedReview = movieReviewService.updateReview(reviewId.toString(), newReview);
         return ResponseEntity.status(HttpStatus.OK).body(updatedReview);
     }
-
-
-
 
 }

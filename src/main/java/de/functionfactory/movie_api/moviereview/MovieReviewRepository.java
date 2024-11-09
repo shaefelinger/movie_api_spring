@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface MovieReviewRepository extends JpaRepository<MovieReview, String> {
     List<MovieReviewView> findAllProjectedBy();
     List<MovieReviewView> findMovieReviewsByMovie_Id(String movieId);
-    // MovieReview save(MovieReview movieReview);
     void deleteById(String reviewId);
     Optional<MovieReview> findMovieReviewById(String reviewId);
 }

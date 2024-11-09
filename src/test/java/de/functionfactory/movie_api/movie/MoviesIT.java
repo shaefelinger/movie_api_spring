@@ -18,8 +18,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.test.annotation.DirtiesContext;
-//import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,12 +26,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 @Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class MoviesIT {
     @Container
     @ServiceConnection

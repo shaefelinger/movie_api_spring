@@ -1,4 +1,4 @@
-package de.functionfactory.movie_api;
+package de.functionfactory.movie_api.tech.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

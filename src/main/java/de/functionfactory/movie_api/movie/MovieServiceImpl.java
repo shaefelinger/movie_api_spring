@@ -27,8 +27,6 @@ public class MovieServiceImpl implements MovieService {
     }
     public MoviePageResponse getMoviesByTitle(String title, int page, int limit) {
         return movieDao.selectMovieByTitle(title, page, limit);
-//                .orElseThrow(() -> new ResourceNotFoundException("Movie with title [%s] not found".formatted(title)));
-
     }
 
     public List<Movie> searchMovies(MovieSearchRequest searchRequest) {

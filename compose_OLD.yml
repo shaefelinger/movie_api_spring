@@ -1,9 +1,0 @@
-services:
-  postgres:
-    image: 'postgres:16.4'
-    environment:
-      - 'POSTGRES_DB=movies'
-      - 'POSTGRES_PASSWORD=password'
-      - 'POSTGRES_USER=user'
-    ports:
-      - '5430:5432'

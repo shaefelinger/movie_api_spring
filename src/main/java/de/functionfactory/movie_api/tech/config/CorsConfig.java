@@ -18,6 +18,5 @@ public class CorsConfig implements WebMvcConfigurer {
                         "http://127.0.0.1:63342"
                 )
                 .allowedMethods("GET","HEAD","PUT","PATCH","POST");
-//                .allowedMethods(HttpMethod.GET.name());
     }
 }

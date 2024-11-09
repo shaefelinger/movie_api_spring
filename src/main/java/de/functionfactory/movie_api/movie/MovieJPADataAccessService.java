@@ -1,10 +1,9 @@
 package de.functionfactory.movie_api.movie;
 
 import de.functionfactory.movie_api.movie.entity.Movie;
-import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class MovieJPADataAccessService implements MovieDao {
     @Override
     public MoviePageResponse selectMovieByTitle(String title, int page, int limit) {
         Page<Movie> moviePage = movieRepository.findByTitleContainingIgnoreCase(
-            title, 
+            title,
             PageRequest.of(page, limit)
         );
         return new MoviePageResponse(moviePage);

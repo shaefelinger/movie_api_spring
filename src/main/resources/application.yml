@@ -1,20 +1,21 @@
 server:
-#  port: 8443
-  port: 8080
+#  port: 8080
+  port: 8443
   error:
     include-message: always
+  ssl:
+    key-store: ./springboot.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: springboot
+    key-password: password
+    enabled: true
   compression:
     enabled: true
-#  ssl:
-#    key-store: ./springboot.p12
-#    key-store-password: password
-#    key-store-type: pkcs12
-#    key-alias: springboot
-#    key-password: password
-
   # You can also configure the compression thresholds like this
 #    min-response-size=2048
 #    mime-types=text/html,text/xml,text/plain,text/css,application/json
+  forward-headers-strategy: NATIVE
 springdoc:
   api-docs:
     enabled: true
@@ -25,6 +26,8 @@ springdoc:
 logging:
   level:
     root: info
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
 management:
   endpoint:
     info:
@@ -46,6 +49,7 @@ spring:
     user:
       name: admin
       password: supersecret
+    require-ssl: true
   datasource:
     url: jdbc:postgresql://localhost:5431/movie_api_db  # replace <your chosen database name>
     driver-class-name: org.postgresql.Driver

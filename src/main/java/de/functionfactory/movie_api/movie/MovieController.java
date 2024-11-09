@@ -4,8 +4,6 @@ import de.functionfactory.movie_api.movie.dto.MovieSearchRequest;
 import de.functionfactory.movie_api.movie.dto.MovieUpdateRequestDto;
 import de.functionfactory.movie_api.movie.entity.Movie;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +33,6 @@ public class MovieController {
     public MovieController(MovieServiceImpl movieService) {
         this.movieService = movieService;
     }
-
-//    @GetMapping
-//    ResponseEntity<List<Movie>> getMovies() {
-//        var movies = movieService.getMovies();
-//        return ResponseEntity.ok(movies);
-//    }
 
     @GetMapping("/{id}")
     ResponseEntity<Movie> getMovieById(@PathVariable @Valid UUID id) {
