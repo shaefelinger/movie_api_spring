@@ -28,7 +28,7 @@ public class MovieReviewServiceImpl implements MovieReviewService {
 
     public MovieReview getReviewById(String reviewId) {
         MovieReview review = movieReviewDao.selectReviewById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(reviewId)));
+                .orElseThrow(() -> new ResourceNotFoundException("Review with id [%s] not found".formatted(reviewId)));
         return review;
     }
 
@@ -46,7 +46,7 @@ public class MovieReviewServiceImpl implements MovieReviewService {
     public MovieReview updateReview(String reviewId, ReviewUpdateRequestDto newReview) {
 
         MovieReview existingReview = movieReviewDao.selectReviewById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie with id [%s] not found".formatted(reviewId)));
+                .orElseThrow(() -> new ResourceNotFoundException("Review with id [%s] not found".formatted(reviewId)));
 
            MovieReview updatedReview = MovieReview.builder()
            .id(existingReview.getId())

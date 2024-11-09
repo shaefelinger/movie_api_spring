@@ -55,4 +55,8 @@ public class MovieReview {
     @JoinColumn(name = "movie_id", nullable = false)
     @JsonIgnore
     private Movie movie;
+
+    public String getMovieId() {
+        return movie != null ? movie.getId() : null;
+    }
 }
