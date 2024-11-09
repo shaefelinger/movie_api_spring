@@ -1,11 +1,11 @@
 # Movie-API
 
-This is an implementation of the Node/Express-Backend API from The SeniorDev Backend-Course in Java/Springboot
+This is a Java/Springboot implementation of the Node/Express-Backend API from The SeniorDev Backend-Course 
 
 https://www.theseniordev.com/
 
 ### Setup
-Run the Postgres-Docker-Container (db runs on port 5431 )
+Run the Postgres-Docker-Container (Database runs on port 5431)
 
 ```bash
 docker compose up
