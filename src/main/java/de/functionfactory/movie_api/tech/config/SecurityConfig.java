@@ -12,6 +12,8 @@ public class SecurityConfig {
    @Bean
    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        return http
+               .portMapper(portMapper -> portMapper
+                       .http(8080).mapsTo(8443))
                .requiresChannel(channel ->
                        channel.anyRequest().requiresSecure())
                .csrf(csrf -> csrf.disable())
@@ -19,8 +21,6 @@ public class SecurityConfig {
                    .httpStrictTransportSecurity(hsts -> hsts
                        .includeSubDomains(true)
                        .maxAgeInSeconds(31536000)))
-               .portMapper(portMapper -> portMapper
-                   .http(8080).mapsTo(8443))
                .authorizeHttpRequests(authorize ->
                        authorize.anyRequest().permitAll())
                .build();
