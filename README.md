@@ -4,7 +4,7 @@ This is a Java/Springboot implementation of the Node/Express-Backend API from Th
 
 https://www.theseniordev.com/
 
-### Setup
+## Setup
 Run the Postgres-Docker-Container (Database runs on port 5431)
 
 ```bash
