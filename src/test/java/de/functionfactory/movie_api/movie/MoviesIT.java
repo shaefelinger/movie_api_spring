@@ -85,7 +85,6 @@ public class MoviesIT {
             RestAssuredMockMvc.standaloneSetup(movieController);
 
             // Step 2: Get all movies and verify
-            @SuppressWarnings("unchecked")
             Map<String, Object> response = RestAssuredMockMvc
                     .given()
                     .when().get("/api/movies")

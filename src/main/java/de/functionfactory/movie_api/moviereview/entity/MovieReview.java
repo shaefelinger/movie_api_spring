@@ -56,6 +56,10 @@ public class MovieReview {
     @JsonIgnore
     private Movie movie;
 
+    /**
+     * Used by MovieReviewView projection to get the movie ID
+     * @return The ID of the associated movie, or null if no movie is associated
+     */
     public String getMovieId() {
         return movie != null ? movie.getId() : null;
     }

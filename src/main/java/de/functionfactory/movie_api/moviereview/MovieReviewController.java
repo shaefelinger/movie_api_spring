@@ -36,8 +36,7 @@ public class MovieReviewController {
 
     @GetMapping("/reviews")
     ResponseEntity<List<MovieReviewView>> getMovieReviews() {
-        var reviews = movieReviewService.getMovieReviews();
-        return ResponseEntity.status(HttpStatus.OK).body(reviews);
+        return ResponseEntity.status(HttpStatus.OK).body(movieReviewService.getMovieReviews());
     }
 
     @GetMapping("/{movieId}/reviews")
