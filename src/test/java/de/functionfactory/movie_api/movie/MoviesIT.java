@@ -76,16 +76,17 @@ public class MoviesIT {
                     .when().get("/api/movies")
                     .then()
                     .status(HttpStatus.OK)
-                    .extract().as(new TypeRef<Map<String, Object>>() {});
+                    .extract().as(new TypeRef<>() {
+                    });
 
             List<Map<String, Object>> movies = (List<Map<String, Object>>) response.get("data");
 
             // Step 3: Verify both movies are in the response
             assertThat(movies.stream()
-                    .anyMatch(movie -> movie.get("id").toString().equals(movieOne.getId().toString())))
+                    .anyMatch(movie -> movie.get("id").toString().equals(movieOne.getId())))
                     .isTrue();
             assertThat(movies.stream()
-                    .anyMatch(movie -> movie.get("id").toString().equals(movieTwo.getId().toString())))
+                    .anyMatch(movie -> movie.get("id").toString().equals(movieTwo.getId())))
                     .isTrue();
         }
 
@@ -111,7 +112,8 @@ public class MoviesIT {
                     .then()
                     .log().all()
                     .status(HttpStatus.OK)
-                    .extract().as(new TypeRef<Map<String, Object>>() {});
+                    .extract().as(new TypeRef<>() {
+                    });
 
             List<Map<String, Object>> firstPageContent = (List<Map<String, Object>>) firstPageResponse.get("data");
 
@@ -167,7 +169,7 @@ public class MoviesIT {
                         .extract().as(new TypeRef<>() {});
 
                 // Verify response matches created movie
-                assertThat(response.get("id")).isEqualTo(movieOne.getId().toString());
+                assertThat(response.get("id")).isEqualTo(movieOne.getId());
                 assertThat(response.get("title")).isEqualTo(movieOne.getTitle());
                 // Add other relevant assertions
             }

@@ -9,7 +9,7 @@ Run the Postgres-Docker-Container (db runs on port 5431 )
 docker compose up
 ```
 
-Start the App (Maven and Java 17 has to be installed on the machine)
+Start the App (Maven and Java 17 has to be installed)
 ```bash
  mvn spring-boot:run
 ```
@@ -32,3 +32,4 @@ Start the App (Maven and Java 17 has to be installed on the machine)
 - ssl
   - http://localhost:8080/api/movies
   - https://localhost:8443/api/movies
+- Tests similar to the Node/Express-Version

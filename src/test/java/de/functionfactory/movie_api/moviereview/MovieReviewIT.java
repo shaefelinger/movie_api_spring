@@ -470,14 +470,11 @@ public class MovieReviewIT {
         @Test
         @DisplayName("returns 404 when review does not exist")
         public void whenReviewDoesNotExist_thenReturn404() {
-//            String movieId = "f74cf1ca-8c7b-435b-96c6-e4448a653596"; // existing movie ID
             MovieWithReview result = testDataGenerator.createFakeMovieWithReviews();
 
             Movie fakeMovie = result.movie();
-            MovieReview fakeReview = result.review();
 
             String movieId = fakeMovie.getId();
-//            String reviewId = fakeReview.getId();
 
             String nonExistentReviewId = UUID.randomUUID().toString();
             String updateData = "{ \"rating\": 8 }";

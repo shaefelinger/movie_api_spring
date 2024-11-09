@@ -1,7 +1,6 @@
 package de.functionfactory.movie_api.moviereview;
 
 import de.functionfactory.movie_api.movie.MovieService;
-import de.functionfactory.movie_api.movie.dto.MovieUpdateRequestDto;
 import de.functionfactory.movie_api.movie.entity.Movie;
 import de.functionfactory.movie_api.moviereview.dto.MovieReviewView;
 import de.functionfactory.movie_api.moviereview.dto.ReviewUpdateRequestDto;
